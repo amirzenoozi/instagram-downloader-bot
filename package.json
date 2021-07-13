@@ -1,0 +1,18 @@
+{
+  "name": "instagram-downloader-bot",
+  "version": "1.0.0",
+  "description": "A simple TelegramBot to download instagram posts",
+  "main": "index.js",
+  "author": "Amirhossein D. Zenoozi",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "telegraf": "^4.4.0"
+  }
+}
