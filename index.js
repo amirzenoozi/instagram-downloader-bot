@@ -1,4 +1,6 @@
 const { Telegraf } = require('telegraf');
+const cheerio = require('cheerio');
+const axios = require('axios');
 require('dotenv').config();
 
 const token = process.env.BOT_TOKEN
@@ -6,22 +8,24 @@ if (token === undefined) {
   throw new Error('BOT_TOKEN must be provided!')
 }
 
-function sendLiveLocation (ctx) {
-  let lat = 42.0
-  let lon = 42.0
-  ctx.replyWithLocation(lat, lon, { live_period: 60 }).then((message) => {
-    const timer = setInterval(() => {
-      lat += Math.random() * 0.001
-      lon += Math.random() * 0.001
-      ctx.telegram.editMessageLiveLocation(lat, lon, message.chat.id, message.message_id).catch(() => clearInterval(timer))
-    }, 1000)
-  })
-}
+// Make Instance
+const TelegramBot = new Telegraf(token);
 
-const bot = new Telegraf(token)
-bot.start(sendLiveLocation)
-bot.launch()
+TelegramBot.start((ctx) => {
+  return ctx.reply('Welcome')
+})
+TelegramBot.on('text', async (ctx) => {
+  // console.log(ctx.message.chat)
+  // console.log(ctx.message.text)
+})
+TelegramBot.help((ctx) => {
+  return ctx.reply('Send me a sticker')
+})
+TelegramBot.on('sticker', (ctx) => {
+  return ctx.reply('👍')
+})
+TelegramBot.launch()
 
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+process.once('SIGINT', () => TelegramBot.stop('SIGINT'))
+process.once('SIGTERM', () => TelegramBot.stop('SIGTERM'))
